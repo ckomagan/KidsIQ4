@@ -21,6 +21,12 @@
 		E02EF81315EACC2F006E020A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E02EF7F115EACC2E006E020A /* Foundation.framework */; };
 		E02EF81B15EACC2F006E020A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E02EF81915EACC2F006E020A /* InfoPlist.strings */; };
 		E02EF81E15EACC2F006E020A /* KidsIQ4Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = E02EF81D15EACC2F006E020A /* KidsIQ4Tests.m */; };
+		E02EF83915EACFFC006E020A /* QuitController.m in Sources */ = {isa = PBXBuildFile; fileRef = E02EF83715EACFFC006E020A /* QuitController.m */; };
+		E02EF83A15EACFFC006E020A /* QuitController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E02EF83815EACFFC006E020A /* QuitController.xib */; };
+		E02EF83E15EAD431006E020A /* NameViewIPadController.m in Sources */ = {isa = PBXBuildFile; fileRef = E02EF83C15EAD431006E020A /* NameViewIPadController.m */; };
+		E092473515EB12FB00F22DBC /* Country.txt in Resources */ = {isa = PBXBuildFile; fileRef = E092473415EB12FB00F22DBC /* Country.txt */; };
+		E0970EB315F6B18500ED2725 /* ResultIPadController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0970EB215F6B18500ED2725 /* ResultIPadController.xib */; };
+		E0970EBA15F6DC9600ED2725 /* ResultIPadController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0970EB915F6DC9600ED2725 /* ResultIPadController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,22 +44,31 @@
 		E02EF7EF15EACC2E006E020A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E02EF7F115EACC2E006E020A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E02EF7F315EACC2E006E020A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		E02EF7F715EACC2E006E020A /* KidsIQ4-Info.plist */ = {isa = PBXFileReference; path = "KidsIQ4-Info.plist"; sourceTree = "<group>"; };
+		E02EF7F715EACC2E006E020A /* KidsIQ4-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KidsIQ4-Info.plist"; sourceTree = "<group>"; };
 		E02EF7F915EACC2E006E020A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E02EF7FB15EACC2E006E020A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		E02EF7FD15EACC2F006E020A /* KidsIQ4-Prefix.pch */ = {isa = PBXFileReference; path = "KidsIQ4-Prefix.pch"; sourceTree = "<group>"; };
-		E02EF7FE15EACC2F006E020A /* KidsIQ4AppDelegate.h */ = {isa = PBXFileReference; path = KidsIQ4AppDelegate.h; sourceTree = "<group>"; };
+		E02EF7FD15EACC2F006E020A /* KidsIQ4-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KidsIQ4-Prefix.pch"; sourceTree = "<group>"; };
+		E02EF7FE15EACC2F006E020A /* KidsIQ4AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KidsIQ4AppDelegate.h; sourceTree = "<group>"; };
 		E02EF7FF15EACC2F006E020A /* KidsIQ4AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KidsIQ4AppDelegate.m; sourceTree = "<group>"; };
 		E02EF80215EACC2F006E020A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		E02EF80515EACC2F006E020A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
-		E02EF80715EACC2F006E020A /* KidsIQ4ViewController.h */ = {isa = PBXFileReference; path = KidsIQ4ViewController.h; sourceTree = "<group>"; };
+		E02EF80715EACC2F006E020A /* KidsIQ4ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KidsIQ4ViewController.h; sourceTree = "<group>"; };
 		E02EF80815EACC2F006E020A /* KidsIQ4ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KidsIQ4ViewController.m; sourceTree = "<group>"; };
 		E02EF80F15EACC2F006E020A /* KidsIQ4Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KidsIQ4Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E02EF81015EACC2F006E020A /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		E02EF81815EACC2F006E020A /* KidsIQ4Tests-Info.plist */ = {isa = PBXFileReference; path = "KidsIQ4Tests-Info.plist"; sourceTree = "<group>"; };
+		E02EF81815EACC2F006E020A /* KidsIQ4Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KidsIQ4Tests-Info.plist"; sourceTree = "<group>"; };
 		E02EF81A15EACC2F006E020A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		E02EF81C15EACC2F006E020A /* KidsIQ4Tests.h */ = {isa = PBXFileReference; path = KidsIQ4Tests.h; sourceTree = "<group>"; };
+		E02EF81C15EACC2F006E020A /* KidsIQ4Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KidsIQ4Tests.h; sourceTree = "<group>"; };
 		E02EF81D15EACC2F006E020A /* KidsIQ4Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KidsIQ4Tests.m; sourceTree = "<group>"; };
+		E02EF83615EACFFC006E020A /* QuitController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuitController.h; sourceTree = "<group>"; };
+		E02EF83715EACFFC006E020A /* QuitController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuitController.m; sourceTree = "<group>"; };
+		E02EF83815EACFFC006E020A /* QuitController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuitController.xib; sourceTree = "<group>"; };
+		E02EF83B15EAD431006E020A /* NameViewIPadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NameViewIPadController.h; sourceTree = "<group>"; };
+		E02EF83C15EAD431006E020A /* NameViewIPadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NameViewIPadController.m; sourceTree = "<group>"; };
+		E092473415EB12FB00F22DBC /* Country.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Country.txt; sourceTree = "<group>"; };
+		E0970EB215F6B18500ED2725 /* ResultIPadController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ResultIPadController.xib; path = ../ResultIPadController.xib; sourceTree = "<group>"; };
+		E0970EB615F6B30C00ED2725 /* ResultIPadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultIPadController.h; sourceTree = "<group>"; };
+		E0970EB915F6DC9600ED2725 /* ResultIPadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultIPadController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +128,9 @@
 		E02EF7F515EACC2E006E020A /* KidsIQ4 */ = {
 			isa = PBXGroup;
 			children = (
+				E0970EB215F6B18500ED2725 /* ResultIPadController.xib */,
+				E0970EB615F6B30C00ED2725 /* ResultIPadController.h */,
+				E0970EB915F6DC9600ED2725 /* ResultIPadController.m */,
 				E02EF7FE15EACC2F006E020A /* KidsIQ4AppDelegate.h */,
 				E02EF7FF15EACC2F006E020A /* KidsIQ4AppDelegate.m */,
 				E02EF80115EACC2F006E020A /* MainStoryboard_iPhone.storyboard */,
@@ -120,6 +138,11 @@
 				E02EF80715EACC2F006E020A /* KidsIQ4ViewController.h */,
 				E02EF80815EACC2F006E020A /* KidsIQ4ViewController.m */,
 				E02EF7F615EACC2E006E020A /* Supporting Files */,
+				E02EF83B15EAD431006E020A /* NameViewIPadController.h */,
+				E02EF83C15EAD431006E020A /* NameViewIPadController.m */,
+				E02EF83615EACFFC006E020A /* QuitController.h */,
+				E02EF83715EACFFC006E020A /* QuitController.m */,
+				E02EF83815EACFFC006E020A /* QuitController.xib */,
 			);
 			path = KidsIQ4;
 			sourceTree = "<group>";
@@ -131,6 +154,7 @@
 				E02EF7F815EACC2E006E020A /* InfoPlist.strings */,
 				E02EF7FB15EACC2E006E020A /* main.m */,
 				E02EF7FD15EACC2F006E020A /* KidsIQ4-Prefix.pch */,
+				E092473415EB12FB00F22DBC /* Country.txt */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -227,6 +251,9 @@
 				E02EF7FA15EACC2E006E020A /* InfoPlist.strings in Resources */,
 				E02EF80315EACC2F006E020A /* MainStoryboard_iPhone.storyboard in Resources */,
 				E02EF80615EACC2F006E020A /* MainStoryboard_iPad.storyboard in Resources */,
+				E02EF83A15EACFFC006E020A /* QuitController.xib in Resources */,
+				E092473515EB12FB00F22DBC /* Country.txt in Resources */,
+				E0970EB315F6B18500ED2725 /* ResultIPadController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,6 +291,9 @@
 				E02EF7FC15EACC2E006E020A /* main.m in Sources */,
 				E02EF80015EACC2F006E020A /* KidsIQ4AppDelegate.m in Sources */,
 				E02EF80915EACC2F006E020A /* KidsIQ4ViewController.m in Sources */,
+				E02EF83915EACFFC006E020A /* QuitController.m in Sources */,
+				E02EF83E15EAD431006E020A /* NameViewIPadController.m in Sources */,
+				E0970EBA15F6DC9600ED2725 /* ResultIPadController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,10 +355,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv7,
+					armv6,
+				);
 				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -342,7 +376,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -351,10 +385,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv7,
+					armv6,
+				);
 				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEAD_CODE_STRIPPING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -362,7 +400,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -373,7 +411,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "KidsIQ4/KidsIQ4-Prefix.pch";
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "KidsIQ4/KidsIQ4-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -384,7 +425,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "KidsIQ4/KidsIQ4-Prefix.pch";
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "KidsIQ4/KidsIQ4-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -434,7 +478,7 @@
 				E02EF82015EACC2F006E020A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		E02EF82115EACC2F006E020A /* Build configuration list for PBXNativeTarget "KidsIQ4" */ = {
 			isa = XCConfigurationList;
@@ -443,6 +487,7 @@
 				E02EF82315EACC2F006E020A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 		E02EF82415EACC2F006E020A /* Build configuration list for PBXNativeTarget "KidsIQ4Tests" */ = {
 			isa = XCConfigurationList;
@@ -451,6 +496,7 @@
 				E02EF82615EACC2F006E020A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

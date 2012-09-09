@@ -31,10 +31,10 @@
 @synthesize selectedChoice = _selectedChoice;
 @synthesize correctChoice = _correctChoice;
 @synthesize usedNumbers;
-NSInteger _id = 0;
+NSInteger _id = -1;
 NSInteger _score = 0;
-NSInteger _noOfQuestions = 0;
-int count;
+NSInteger _noOfQuestions = 1;
+int count = 1;
 NSDictionary *res;
 NSString *titleText;
 NSString *scoreText;
@@ -123,7 +123,13 @@ bool reset;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	if(_id <= maxQuestions)
+    //_id = [self generateRandomNumber];
+    while(_id < 0)
+    {
+        _id = [self generateRandomNumber];
+    }
+
+	if(_noOfQuestions <= maxQuestions)
 	{
 		submit.enabled = FALSE;
 		[submit setTitle: @"Select" forState: UIControlStateNormal];
@@ -137,8 +143,8 @@ bool reset;
 		self.responseData = [NSMutableData data];
 		
 		NSURLRequest *aRequest = [NSURLRequest requestWithURL:[NSURL URLWithString: _nsURL]];
-		NSLog(@"request established");
-		NSLog(@"didReceiveResponse");
+		//NSLog(@"request established");
+		//NSLog(@"didReceiveResponse");
 		[[NSURLConnection alloc] initWithRequest:aRequest delegate:self];
         
 	}
@@ -158,22 +164,24 @@ bool reset;
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"didFailWithError");
-    NSLog(@"Connection failed: %@", [error description]);
+    //NSLog(@"didFailWithError");
+    //NSLog(@"Connection failed: %@", [error description]);
     self.responseData = nil;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    NSLog(@"connectionDidFinishLoading");
-    NSLog(@"Succeeded! Received %d bytes of data",[self.responseData length]);
+    //NSLog(@"connectionDidFinishLoading");
+    //NSLog(@"Succeeded! Received %d bytes of data",[self.responseData length]);
     
     NSError *myError = nil;
     res = [NSJSONSerialization JSONObjectWithData:self.responseData options:NSJSONReadingMutableLeaves error:&myError];
     NSMutableArray *answers = [[NSMutableArray alloc] init];
     
     for(NSDictionary *res1 in res) {
-        question.text = [res1 objectForKey:@"question"];
+        NSString *preText = [NSString stringWithFormat:@"%d", _noOfQuestions];
+        preText = [preText stringByAppendingFormat:@". "];
+        question.text = [preText stringByAppendingString:[res1 objectForKey:@"question"]];
         NSString *answer = [res1 objectForKey:@"choice_text"];
         [answers addObject :answer];
         
@@ -184,8 +192,11 @@ bool reset;
         }
     }
     
-    if ([res count] ==0)
+    NSLog(@"question ***** =%@", question.text);
+
+    if ([res count] == 0)
     {
+        NSLog(@"_id = %d", _id);
         [self showResults];
         //[self showResultsIPad];
         return;
@@ -216,10 +227,10 @@ bool reset;
 
 - (void)resetAll /* restart the quiz */
 {
-    _id = 1;
+    _id = -1;
     _score = 0;
     reset = YES;  //reset the first set of questions
-    _noOfQuestions = 0;
+    _noOfQuestions = 1;
     [self viewDidLoad];
 }
 
@@ -253,7 +264,8 @@ bool reset;
             [result setTextColor:[UIColor redColor]];
         }
         _noOfQuestions++;
-        _id++;
+        //_id++;
+        _id = [self generateRandomNumber];
 		[self calculatescore];
         [submit setTitle:@"Next" forState:(UIControlState)UIControlStateNormal];
 		[submit setBackgroundColor:[UIColor purpleColor]];
@@ -273,7 +285,11 @@ bool reset;
 
 - (IBAction)skipQuestion
 {
-    _id++;
+    //_id++;
+    //while(_id < 0)
+    //{
+        _id = [self generateRandomNumber];
+    //}
     _noOfQuestions++;
     [self resetAllChoices];
     [self calculatescore];
@@ -285,7 +301,7 @@ bool reset;
 {
     scoreText = [NSString stringWithFormat:@"%d",_score];
     scoreText = [scoreText stringByAppendingString:@ " / "];
-    scoreText = [scoreText stringByAppendingString:[NSString stringWithFormat:@"%d",_noOfQuestions]];
+    scoreText = [scoreText stringByAppendingString:[NSString stringWithFormat:@"%d",maxQuestions]];
     if (_noOfQuestions > 0)
     {
         int tally = _score / _noOfQuestions;
@@ -353,25 +369,25 @@ bool reset;
 
 -(int)generateRandomNumber
 {
-    if(count <= maxQuestions)
-    {
-        int randomNumber = (arc4random() % maxQuestions) + 1;
-        
+    int randomNumber = -1;
+    //if(count < maxQuestions)
+    //{
+        randomNumber = (arc4random() % 60)+1;
+        NSLog(@"numberWithSet : %@ \n\n",usedNumbers);
         bool myIndex = [usedNumbers containsObject:[NSNumber numberWithInt: randomNumber]];
         if (myIndex == false)
         {
             [usedNumbers addObject:[NSNumber numberWithInt:randomNumber]];
-            NSLog(@"numberWithSet : %@ \n\n",usedNumbers);
             count++;
             return randomNumber;
         }
         else{
-            [self generateRandomNumber];
-            return 0;
+            NSLog(@"number already there : %d", randomNumber);
+            return -1;
         }
 		
-	}
-	return 0;
+	//}
+	return randomNumber;
 }
 
 - (void)viewDidUnload

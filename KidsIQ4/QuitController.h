@@ -13,6 +13,8 @@
     IBOutlet UIButton *dismissNo;
 }
 
+@property (nonatomic, retain) NSTimer *mainTimer;
+
 -(IBAction)dismissView;
 -(IBAction)loginScreen;
 

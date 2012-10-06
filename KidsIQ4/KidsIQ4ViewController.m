@@ -1,36 +1,30 @@
 //
-//  KidsIQ4ViewController.m
+//  KidsIQ5ViewController.m
 //  KidsIQ4
 //
-//  Created by Chan Komagan on 7/28/12.
-//  Copyright (c) 2012 KidsIQ. All rights reserved.
+//  Created by Chan Komagan on 9/17/12.
+//  Copyright (c) 2012 Chan Komagan. All rights reserved.
 //
 
 #import "KidsIQ4ViewController.h"
-#import "ResultIPadController.h"
 #import "NameViewIPadController.h"
 #import "QuitController.h"
+#import "ResultIPadController.h"
+#import "QuartzCore/QuartzCore.h"
 
-@interface KidsIQ4ViewController()
+@interface KidsIQ4ViewController ()
 @property (nonatomic, strong) NSString *nsURL;
 @property (nonatomic, strong) NSString *selectedChoice;
 @property (nonatomic, strong) NSString *correctChoice;
 @end
 
-@interface UIButton (ColoredBackground)
-
-- (void)setBackgroundColor:(UIColor *)backgroundColor forState:(UIControlState)state;
-+ (UIColor *) silverColor;
-
-@end
-
 @implementation KidsIQ4ViewController
-
 @synthesize nsURL = _nsURL;
 @synthesize responseData;
 @synthesize selectedChoice = _selectedChoice;
 @synthesize correctChoice = _correctChoice;
 @synthesize usedNumbers;
+@synthesize mainTimer;
 NSInteger _id = -1;
 NSInteger _score = 0;
 NSInteger _noOfQuestions = 1;
@@ -38,26 +32,31 @@ int count = 1;
 NSDictionary *res;
 NSString *titleText;
 NSString *scoreText;
+NSString *finalScoreText;
 NSString *btnPressed;
 bool reset;
-
+int counter;
+int hours, minutes, seconds;
+int secondsLeft;
+int noOfSecs;
+UIColor *greenColor;
+UIColor *redColor;
 @synthesize name;
+@synthesize country;
+@synthesize paid;
+@synthesize level;
 @synthesize maxQuestions;
-
-
+@synthesize myCounterLabel;
 
 -(void)showLoginViewController {
     
     nameLabel.text = name;
 }
 
--(IBAction)showModalViewController {
+-(IBAction)showQuitController {
     QuitController *tempView = [[QuitController alloc] initWithNibName:@"QuitController" bundle:nil];
+    tempView.mainTimer = mainTimer;
     [self presentModalViewController:tempView animated:true];
-}
-
-- (IBAction)submit:(id)sender {
-    
 }
 
 - (void)showbutton {
@@ -71,8 +70,8 @@ bool reset;
     
     [self resetAllChoices];
     choicea = (UIButton *)sender;
-    [answerA setTextColor:[UIColor darkGrayColor]];
-    [choicea setBackgroundColor:[UIColor darkGrayColor]];
+    [answerA setTextColor:[UIColor blueColor]];
+    [choicea setBackgroundColor:[UIColor blueColor]];
     _selectedChoice = answerA.text;
 	btnPressed = @"choicea";
     [self showbutton];
@@ -82,8 +81,8 @@ bool reset;
 	
     [self resetAllChoices];
     choiceb = (UIButton *)sender;
-    [answerB setTextColor:[UIColor darkGrayColor]];
-    [choiceb setBackgroundColor:[UIColor darkGrayColor]];
+    [answerB setTextColor:[UIColor blueColor]];
+    [choiceb setBackgroundColor:[UIColor blueColor]];
     _selectedChoice = answerB.text;
 	btnPressed = @"choiceb";
     [self showbutton];
@@ -94,20 +93,19 @@ bool reset;
     
     [self resetAllChoices];
     choicec = (UIButton *)sender;
-    [answerC setTextColor:[UIColor darkGrayColor]];
-    [choicec setBackgroundColor:[UIColor darkGrayColor]];
+    [answerC setTextColor:[UIColor blueColor]];
+    [choicec setBackgroundColor:[UIColor blueColor]];
     _selectedChoice = answerC.text;
 	btnPressed = @"choicec";
     [self showbutton];
-	
 }
 
 - (IBAction)choiced:(id)sender {
     
     [self resetAllChoices];
     choiced = (UIButton *)sender;
-    [answerD setTextColor:[UIColor darkGrayColor]];
-    [choiced setBackgroundColor:[UIColor darkGrayColor]];
+    [answerD setTextColor:[UIColor blueColor]];
+    [choiced setBackgroundColor:[UIColor blueColor]];
     _selectedChoice = answerD.text;
 	btnPressed = @"choiced";
     [self showbutton];
@@ -123,12 +121,28 @@ bool reset;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //_id = [self generateRandomNumber];
+    nameLabel.text = name;
+    usedNumbers = [NSMutableSet setWithCapacity:maxQuestions];
+
+    hours = minutes = seconds = 0;
+    if ( [mainTimer isValid]){
+        [mainTimer invalidate], mainTimer=nil;
+    }
+    mainTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
+                                                 target:self
+                                               selector:@selector(advanceTimer:)
+                                               userInfo:nil
+                                                repeats:YES];
+    [self processQuestions];
+}
+
+- (void)processQuestions
+{
     while(_id < 0)
     {
         _id = [self generateRandomNumber];
     }
-
+    [self trackScore]; //initialize the score counter
 	if(_noOfQuestions <= maxQuestions)
 	{
 		submit.enabled = FALSE;
@@ -137,22 +151,18 @@ bool reset;
 		[submit setBackgroundColor:[UIColor darkGrayColor]];
         
 		_nsURL = [@"http://www.komagan.com/KidsIQ/index.php?format=json&quiz=1&question_id=" stringByAppendingFormat:@"%d ", _id];
-        
-		NSLog(@"URL=%@",_nsURL);
-        
 		self.responseData = [NSMutableData data];
 		
 		NSURLRequest *aRequest = [NSURLRequest requestWithURL:[NSURL URLWithString: _nsURL]];
-		//NSLog(@"request established");
-		//NSLog(@"didReceiveResponse");
+		NSLog(@"request established");
+		NSLog(@"didReceiveResponse");
 		[[NSURLConnection alloc] initWithRequest:aRequest delegate:self];
-        
 	}
 	else{
 		[self showResults];
-        //[self showResultsIPad];
         return;
 	}
+
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
@@ -164,8 +174,6 @@ bool reset;
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    //NSLog(@"didFailWithError");
-    //NSLog(@"Connection failed: %@", [error description]);
     self.responseData = nil;
 }
 
@@ -180,7 +188,7 @@ bool reset;
     
     for(NSDictionary *res1 in res) {
         NSString *preText = [NSString stringWithFormat:@"%d", _noOfQuestions];
-        preText = [preText stringByAppendingFormat:@". "];
+        preText = [preText stringByAppendingFormat:@") "];
         question.text = [preText stringByAppendingString:[res1 objectForKey:@"question"]];
         NSString *answer = [res1 objectForKey:@"choice_text"];
         [answers addObject :answer];
@@ -190,15 +198,12 @@ bool reset;
         if ([rightChoice isEqualToString:@"1"]) {
             _correctChoice = answer;
         }
+        if([question.text isEqualToString:@""]) [self disableAllChoices];
     }
     
-    NSLog(@"question ***** =%@", question.text);
-
-    if ([res count] == 0)
+    if ([res count] ==0)
     {
-        NSLog(@"_id = %d", _id);
         [self showResults];
-        //[self showResultsIPad];
         return;
     }
     
@@ -206,19 +211,18 @@ bool reset;
     answerB.text = [answers objectAtIndex:1];
     answerC.text = [answers objectAtIndex:2];
     answerD.text = [answers objectAtIndex:3];
-	[self calculatescore];
 }
 
 - (void)resetAllChoices
 {
     [answerA setTextColor:[UIColor blackColor]];
-    [choicea setBackgroundColor:[UIColor blueColor]];
+    [choicea setBackgroundColor:[UIColor blackColor]];
     [answerB setTextColor:[UIColor blackColor]];
-    [choiceb setBackgroundColor:[UIColor blueColor]];
+    [choiceb setBackgroundColor:[UIColor blackColor]];
     [answerC setTextColor:[UIColor blackColor]];
-    [choicec setBackgroundColor:[UIColor blueColor]];
+    [choicec setBackgroundColor:[UIColor blackColor]];
     [answerD setTextColor:[UIColor blackColor]];
-    [choiced setBackgroundColor:[UIColor blueColor]];
+    [choiced setBackgroundColor:[UIColor blackColor]];
     choicea.enabled = YES;
     choiceb.enabled = YES;
     choiceb.enabled = YES;
@@ -231,6 +235,9 @@ bool reset;
     _score = 0;
     reset = YES;  //reset the first set of questions
     _noOfQuestions = 1;
+    greenColor = [UIColor colorWithRed:60.0f/255.0f green:179.0f/255.0f blue:113.0f/255.0f alpha:1.0f];
+    [self setCounter];
+    [mainTimer invalidate];
     [self viewDidLoad];
 }
 
@@ -254,19 +261,18 @@ bool reset;
     {
         if ([_selectedChoice isEqualToString:_correctChoice]) {
             result.text = @"Correct Answer!";
-            [result setTextColor:[UIColor greenColor]];
-			[self highlightChoice];
+            [result setTextColor:greenColor];
+			[self highlightCorrect];
             _score++;
         }
         else {
 			NSString *preText = @"Incorrect! The correct answer is ";
             result.text = [preText stringByAppendingString:[NSString stringWithFormat:@"%@",_correctChoice]];
             [result setTextColor:[UIColor redColor]];
+            [self highlightWrong];
         }
         _noOfQuestions++;
-        //_id++;
         _id = [self generateRandomNumber];
-		[self calculatescore];
         [submit setTitle:@"Next" forState:(UIControlState)UIControlStateNormal];
 		[submit setBackgroundColor:[UIColor purpleColor]];
 		[submit setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -279,119 +285,178 @@ bool reset;
         result.text = @"";
         [self resetAllChoices];
         [self enableAllChoices];
+        [self trackScore];
+        [mainTimer invalidate];
         [self viewDidLoad];
     }
+    
 }
 
 - (IBAction)skipQuestion
 {
-    //_id++;
-    //while(_id < 0)
-    //{
-        _id = [self generateRandomNumber];
-    //}
+    _id = [self generateRandomNumber];
     _noOfQuestions++;
     [self resetAllChoices];
-    [self calculatescore];
+    [self trackScore];
 	result.text =@"";
+    [mainTimer invalidate];
     [self viewDidLoad];
+}
+
+- (void)trackScore
+{
+    scoreText = [NSString stringWithFormat:@"%d",_score];
+    scoreText = [scoreText stringByAppendingString:@ "/"];
+    scoreText = [scoreText stringByAppendingString:[NSString stringWithFormat:@"%d",maxQuestions]];
+    [score setText: scoreText];
 }
 
 - (void)calculatescore
 {
-    scoreText = [NSString stringWithFormat:@"%d",_score];
-    scoreText = [scoreText stringByAppendingString:@ " / "];
-    scoreText = [scoreText stringByAppendingString:[NSString stringWithFormat:@"%d",maxQuestions]];
+    float tally;
     if (_noOfQuestions > 0)
     {
-        int tally = _score / _noOfQuestions;
+        tally = (float)_score / (float)maxQuestions;
+        tally = roundf (tally * 100) / 100.0;
         
-        if(tally >= 0.9)
+        if(tally > 0.90)
         {
             titleText = @"You are practically a genius.";
         }
-        if((tally >= 0.7) && (tally <= 0.9))
+        if((tally > 0.70) && (tally <= 0.90))
         {
-            titleText = @"That's not bad!";
+            titleText = @"That's great score!";
         }
-        if((tally >= 0.5) && (tally <= 0.7))
+        if((tally > 0.49) && (tally <= 0.70))
         {
             titleText = @"I think you can do better?!?";
         }
-        if(tally <= 0.5)
+        if(tally <= 0.49)
         {
             titleText = @"You better start over.";
         }
-        
     }
-    [score setText: scoreText];
+    finalScoreText = [NSString stringWithFormat:@"%.0f", round(tally*100)];
+    finalScoreText = [finalScoreText stringByAppendingString: @"%"];
 }
 
--(void)highlightChoice
+-(void)highlightCorrect
 {
 	if([btnPressed isEqual:@"choicea"])
 	{
-		[choicea setBackgroundColor:[UIColor greenColor]];
-		[answerA setTextColor:[UIColor greenColor]];
+		[choicea setBackgroundColor:greenColor];
+		[answerA setTextColor:greenColor];
 	}
 	
 	if([btnPressed isEqual:@"choiceb"])
 	{
-		[choiceb setBackgroundColor:[UIColor greenColor]];
-		[answerB setTextColor:[UIColor greenColor]];
+		[choiceb setBackgroundColor:greenColor];
+		[answerB setTextColor:greenColor];
 	}
     
 	if([btnPressed isEqual:@"choicec"])
 	{
-		[choicec setBackgroundColor:[UIColor greenColor]];
-		[answerC setTextColor:[UIColor greenColor]];
+		[choicec setBackgroundColor:greenColor];
+		[answerC setTextColor:greenColor];
 	}
     
 	if([btnPressed isEqualToString:@"choiced"])
 	{
-		[choiced setBackgroundColor:[UIColor greenColor]];
-		[answerD setTextColor:[UIColor greenColor]];
+		[choiced setBackgroundColor:greenColor];
+		[answerD setTextColor:greenColor];
+	}
+}
+
+-(void)highlightWrong
+{
+	if([btnPressed isEqual:@"choicea"])
+	{
+		[choicea setBackgroundColor:[UIColor redColor]];
+		[answerA setTextColor:[UIColor redColor]];
+	}
+	
+	if([btnPressed isEqual:@"choiceb"])
+	{
+		[choiceb setBackgroundColor:[UIColor redColor]];
+		[answerB setTextColor:[UIColor redColor]];
+	}
+	
+	if([btnPressed isEqual:@"choicec"])
+	{
+		[choicec setBackgroundColor:[UIColor redColor]];
+		[answerC setTextColor:[UIColor redColor]];
+	}
+	
+	if([btnPressed isEqualToString:@"choiced"])
+	{
+		[choiced setBackgroundColor:[UIColor redColor]];
+		[answerD setTextColor:[UIColor redColor]];
 	}
 }
 
 -(void)showResults
 {
+    [self calculatescore];
+    
     ResultIPadController *resultView = [[ResultIPadController alloc] initWithNibName:@"ResultIPadController" bundle:nil];
-    resultView.name = [@"Hi there " stringByAppendingString:[name stringByAppendingString:@""]];
+    resultView.name = name;
     resultView.titleText = titleText;
-    resultView.score = scoreText;
+    resultView.score = finalScoreText;
+    resultView.country = country;
+    resultView.paid = paid;
 	resultView.maxQuestions = maxQuestions;
 	[self resetAll];
     resultView.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [mainTimer invalidate];
     [self presentModalViewController:resultView animated:true];
 }
-
 
 -(int)generateRandomNumber
 {
     int randomNumber = -1;
-    //if(count < maxQuestions)
-    //{
-        randomNumber = (arc4random() % 60)+1;
-        NSLog(@"numberWithSet : %@ \n\n",usedNumbers);
-        bool myIndex = [usedNumbers containsObject:[NSNumber numberWithInt: randomNumber]];
-        if (myIndex == false)
-        {
-            [usedNumbers addObject:[NSNumber numberWithInt:randomNumber]];
-            count++;
-            return randomNumber;
-        }
-        else{
-            NSLog(@"number already there : %d", randomNumber);
-            return -1;
-        }
-		
-	//}
-	return randomNumber;
+    randomNumber = (arc4random() % 70) + 1;
+    NSLog(@"numberWithSet : %@ \n\n",usedNumbers);
+    bool myIndex = [usedNumbers containsObject:[NSNumber numberWithInt: randomNumber]];
+    if (myIndex == false)
+    {
+        [usedNumbers addObject:[NSNumber numberWithInt:randomNumber]];
+        count++;
+        return randomNumber;
+    }
+    else{
+        NSLog(@"number already there : %d", randomNumber);
+        return -1;
+    }
+    return randomNumber;
+}
+
+- (void)setCounter
+{
+    if(level == 1) noOfSecs = 10; //basic
+    if(level == 2) noOfSecs = 7; //intermediate
+    if(level == 3) noOfSecs = 5; //advanced
+    counter = (maxQuestions*noOfSecs)+1;
+    NSLog(@"total secs = %d", counter);
+}
+
+- (void)advanceTimer:(NSTimer *)timer
+{
+    counter--;
+    if (counter <= 0) { [timer invalidate]; [self showResults];}
+    
+    if(counter > 0 ){
+        minutes = (counter % 3600) / 60;
+        seconds = (counter %3600) % 60;
+        myCounterLabel.text = [NSString stringWithFormat:@"%02d:%02d", minutes, seconds];
+    }
+    else{
+        counter = 16925;
+    }
 }
 
 - (void)viewDidUnload
 {
+    [mainTimer invalidate];
     [super viewDidUnload];
 }
 
@@ -402,8 +467,6 @@ bool reset;
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    nameLabel.text = name;
-    usedNumbers = [NSMutableSet setWithCapacity:maxQuestions];
     [super viewDidAppear:animated];
 }
 
@@ -419,12 +482,13 @@ bool reset;
 
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"ResultControllerScreen"]) {
+    if ([[segue identifier] isEqualToString:@"ResultIPadController"]) {
         
     }
 }
 
 -(IBAction)dismissView {
+    [mainTimer invalidate];
     [self dismissModalViewControllerAnimated:YES];
 }
 
@@ -435,4 +499,3 @@ bool reset;
 }
 
 @end
-

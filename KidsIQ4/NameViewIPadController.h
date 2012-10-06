@@ -1,38 +1,45 @@
 //
-//  NameViewPadController.h
+//  NameViewController.h
 //  KidsIQ4
 //
-//  Created by Chan Komagan on 8/26/12.
+//  Created by Chan Komagan on 7/28/12.
 //  Copyright (c) 2012 KidsIQ. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+#import <StoreKit/StoreKit.h>
 
-@interface NameViewIPadController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface NameViewIPadController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver, UIAlertViewDelegate, UITableViewDelegate, UITextFieldDelegate>
 {
     IBOutlet UILabel *nameLabel;
     IBOutlet UILabel *titleLabel;
     IBOutlet UILabel *choicesLabel;
     IBOutlet UILabel *errorStatus;
-    IBOutlet UITextField *nameText;
-    IBOutlet UITextField *choiceText;
+    UITextField *nameText;
     IBOutlet UIButton *nameOK;
     IBOutlet UIPickerView *levelPickerView;
+    IBOutlet UISegmentedControl *segmentedControl;
     NSMutableArray *autoCompleteArray;
-	NSMutableArray *elementArray, *lowerCaseElementArray;
-	UITextField *txtField;
-	UITableView *autoCompleteTableView;
+    NSMutableArray *elementArray, *lowerCaseElementArray;
+    UITextField *countryText;
+    UITableView *countryTableView;
+    IBOutlet UILabel *statusLabel;
+    UIAlertView *askToPurchase;
+    NSMutableData *responseData;
 }
 
 @property (nonatomic, retain) NSArray *levelpicker;
-
 @property (nonatomic, retain) UIPickerView *levelPickerView;
-
+@property (nonatomic, retain)  UILabel *statusLabel;
+@property (nonatomic, retain) NSMutableData *responseData;
 @property int maxQuestions;
 
--(IBAction)validateTextFields:(id)sender;
+-(void)validateTextField;
 -(IBAction)dismissView;
--(IBAction)selectedRow;
 -(IBAction)textFieldReturn:(id)sender;
+-(IBAction)valueChanged;
+-(BOOL)IAPItemPurchased;
+-(void)triggerPurchase;
+-(IBAction)deleteKeyChain:(id)sender;
 
 @end

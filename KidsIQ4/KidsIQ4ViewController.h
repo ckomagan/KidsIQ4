@@ -2,19 +2,20 @@
 //  KidsIQ4ViewController.h
 //  KidsIQ4
 //
-//  Created by Chan Komagan on 8/26/12.
-//  Copyright (c) 2012 KidsIQ. All rights reserved.
+//  Created by Chan Komagan on 9/17/12.
+//  Copyright (c) 2012 Chan Komagan. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface KidsIQ4ViewController : UIViewController 
+@interface KidsIQ4ViewController : UIViewController
 {
     IBOutlet UILabel *question;
     IBOutlet UILabel *answerA;
     IBOutlet UILabel *answerB;
     IBOutlet UILabel *answerC;
     IBOutlet UILabel *answerD;
+    IBOutlet UILabel *myCounterLabel;
     IBOutlet UIButton *choicea;
     IBOutlet UIButton *choiceb;
     IBOutlet UIButton *choicec;
@@ -27,12 +28,15 @@
     NSMutableData *responseData;
 }
 
-@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *name, *country, *paid;
 @property (nonatomic, retain) NSMutableData *responseData;
 @property (nonatomic, retain) NSMutableSet *usedNumbers;
+@property (nonatomic, retain) UILabel *myCounterLabel;
 @property int maxQuestions;
+@property (assign) int level;
+@property (nonatomic, retain) NSTimer *mainTimer;
 
--(IBAction)showModalViewController;
+-(IBAction)showQuitController;
 
 -(IBAction)showLoginViewController;
 
@@ -52,10 +56,9 @@
 
 -(void)showResults;
 
--(void)showResultsIPad;
-
 -(int)generateRandomNumber;
 
 -(IBAction)dismissView;
 
+-(IBAction)startCountdown:(id)sender;
 @end

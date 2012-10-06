@@ -1,5 +1,5 @@
 //
-//  ResultController.m
+//  ResultIPadController.m
 //  KidsIQ4
 //
 //  Created by Chan Komagan on 8/26/12.
@@ -9,16 +9,23 @@
 #import "ResultIPadController.h"
 #import "KidsIQ4ViewController.h"
 #import "NameViewIPadController.h"
+#import "LeaderBoardController.h"
+#import "ASIFormDataRequest.h"
 
 @interface ResultIPadController()
+@property (nonatomic, strong) NSString *nsURL;
 @end
 
 @implementation ResultIPadController
 @synthesize name;
 @synthesize titleText;
 @synthesize score;
+@synthesize country;
+@synthesize paid;
 @synthesize maxQuestions;
 bool reset = NO;
+@synthesize nsURL;
+@synthesize responseData;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,11 +49,42 @@ bool reset = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Do any additional setup after loading the view from its nib.
-    nameLabel.text = name;
+    nameLabel.text =  [@"Hi there " stringByAppendingString:[name stringByAppendingString:@""]];
     titleLabel.text = titleText;
     scoreLabel.text = [@"Your score is: " stringByAppendingString:score];
+    [self sendRequest];
+}
+
+- (void)sendRequest
+{
+    nsURL = @"http://www.komagan.com/KidsIQ/leaders.php?format=json&adduser=1";
+    self.responseData = [NSMutableData data];
+    
+    NSURL *url = [NSURL URLWithString:nsURL];
+    NSLog(@"%@", name);
+    NSLog(@"%@", score);
+    NSLog(@"Paid user or no? %@", paid);
+    
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+    
+    [request setRequestMethod:@"POST"];
+    [request addRequestHeader:@"Content-Type" value:@"application/xml;charset=UTF-8;"];
+    [request setPostValue:name forKey:@"name"];
+    [request setPostValue:score forKey:@"score"];
+    [request setPostValue:paid forKey:@"paid"];
+    [request setPostValue:country forKey:@"country"];
+    [request setDelegate:self];
+    [request startAsynchronous];
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request {
+    NSLog(@"Request failed: %@",[request error]);
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request {
+    NSLog(@"Submitted form successfully");
+    NSLog(@"Response was:");
+    NSLog(@"%@",[request responseString]);
 }
 
 - (void)viewDidUnload
@@ -72,10 +110,17 @@ bool reset = NO;
     
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+-(IBAction)leaderBoardScreen {
+    
+    LeaderBoardController *vc = [[UIStoryboard storyboardWithName:@"MainStoryboard_iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"LeaderBoardController"];
+    [self presentModalViewController:vc animated:false];
+    
+}
+
+-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
-    // Return YES for supported orientations
-	return YES;
+    return (orientation != UIDeviceOrientationLandscapeLeft) &&
+	(orientation != UIDeviceOrientationLandscapeRight);
 }
 
 @end

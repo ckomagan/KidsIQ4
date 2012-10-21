@@ -59,11 +59,11 @@ bool countrySelected = FALSE;
 {
     [super viewDidLoad];
     [self populateCountry];
-    if ([self IAPItemPurchased]) {
+    /*if ([self IAPItemPurchased]) {
         
     } else {
         
-    }
+    }*/
     levelpicker = [NSArray arrayWithObjects:@"60",@"40",@"20",nil];
     
     challengeLevel = 1; noOfQuestions = 0;
@@ -88,6 +88,7 @@ bool countrySelected = FALSE;
     [self.view addSubview:levelPickerView];
     self.levelPickerView.center = CGPointMake(370,580);
     [nameText setFrame:CGRectMake(150, 240, 450, 70)];
+    [self loadUserSession];
 }
 
 - (void)viewDidUnload
@@ -143,7 +144,7 @@ bool countrySelected = FALSE;
         [quizView.mainTimer invalidate];
         quizView.name = nameText.text;
         quizView.country = country;
-        quizView.paid = paid;
+        quizView.paidFlag = paidFlag;
         quizView.maxQuestions = noOfQuestions;
         quizView.level = challengeLevel; //1 is basic
         [quizView resetAll];
@@ -229,6 +230,7 @@ bool countrySelected = FALSE;
     [nameText resignFirstResponder];
     [countryText resignFirstResponder];
     [countryTableView resignFirstResponder];
+    [self checkName];
     [self validateTextField];
     [self checkName];
 }
@@ -244,21 +246,22 @@ bool countrySelected = FALSE;
 	} else {
 		return NO;
 	}
+    [self checkName];
     [self validateTextField];
 }
 
 - (IBAction)backgroundTouched:(id)sender {
     [self.view endEditing:YES];
-    [self validateTextField];
     [self checkName];
+    [self validateTextField];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     [nameText resignFirstResponder];
     [countryText resignFirstResponder];
     [countryTableView resignFirstResponder];
-    [self validateTextField];
     [self checkName];
+    [self validateTextField];
 }
 
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
@@ -417,7 +420,7 @@ bool countrySelected = FALSE;
 
 -(void)checkName
 {
-    nsURL = [@"http://www.komagan.com/KidsIQ/leaders.php?format=json&checkname=1&name=" stringByAppendingFormat:@"%@", newString];
+    nsURL = [@"http://www.komagan.com/KidsIQ/leaders.php?format=json&checkname2=1&name=" stringByAppendingFormat:@"%@", newString];
     self.responseData = [NSMutableData data];
     NSURLRequest *aRequest = [NSURLRequest requestWithURL:[NSURL URLWithString: nsURL]];
     [[NSURLConnection alloc] initWithRequest:aRequest delegate:self];

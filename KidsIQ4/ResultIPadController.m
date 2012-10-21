@@ -13,19 +13,14 @@
 #import "ASIFormDataRequest.h"
 
 @interface ResultIPadController()
+
 @property (nonatomic, strong) NSString *nsURL;
 @end
 
 @implementation ResultIPadController
-@synthesize name;
-@synthesize titleText;
-@synthesize score;
-@synthesize country;
-@synthesize paid;
-@synthesize maxQuestions;
+@synthesize name, titleText, score, country, paidFlag, maxQuestions, nsURL, responseData, fCount, mCount, sCount, fTCount, mTCount, sTCount;
 bool reset = NO;
-@synthesize nsURL;
-@synthesize responseData;
+NSString *paid = @"N";
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -57,7 +52,7 @@ bool reset = NO;
 
 - (void)sendRequest
 {
-    nsURL = @"http://www.komagan.com/KidsIQ/leaders.php?format=json&adduser=1";
+    nsURL = @"http://www.komagan.com/KidsIQ/leaders.php?format=json&adduser2=1";
     self.responseData = [NSMutableData data];
     
     NSURL *url = [NSURL URLWithString:nsURL];
@@ -73,6 +68,13 @@ bool reset = NO;
     [request setPostValue:score forKey:@"score"];
     [request setPostValue:paid forKey:@"paid"];
     [request setPostValue:country forKey:@"country"];
+    [request setPostValue:paid forKey:@"paid"];
+    [request setPostValue:[NSNumber numberWithInt:fCount] forKey:@"fCount"];
+    [request setPostValue:[NSNumber numberWithInt:fTCount] forKey:@"fTCount"];
+    [request setPostValue:[NSNumber numberWithInt:mCount] forKey:@"mCount"];
+    [request setPostValue:[NSNumber numberWithInt:mTCount] forKey:@"mTCount"];
+    [request setPostValue:[NSNumber numberWithInt:sCount] forKey:@"sCount"];
+    [request setPostValue:[NSNumber numberWithInt:sTCount] forKey:@"sTCount"];
     [request setDelegate:self];
     [request startAsynchronous];
 }

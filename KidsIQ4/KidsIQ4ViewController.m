@@ -29,24 +29,17 @@ NSInteger _id = -1;
 NSInteger _score = 0;
 NSInteger _noOfQuestions = 1;
 int count = 1;
+int category;
 NSDictionary *res;
 NSString *titleText;
 NSString *scoreText;
 NSString *finalScoreText;
 NSString *btnPressed;
 bool reset;
-int counter;
-int hours, minutes, seconds;
-int secondsLeft;
-int noOfSecs;
+int counter, hours, minutes, seconds, secondsLeft, noOfSecs, fCount, fTCount, mCount, mTCount, sCount, sTCount;
 UIColor *greenColor;
 UIColor *redColor;
-@synthesize name;
-@synthesize country;
-@synthesize paid;
-@synthesize level;
-@synthesize maxQuestions;
-@synthesize myCounterLabel;
+@synthesize name, country, paidFlag, level, maxQuestions, myCounterLabel;
 
 -(void)showLoginViewController {
     
@@ -54,9 +47,11 @@ UIColor *redColor;
 }
 
 -(IBAction)showQuitController {
-    QuitController *tempView = [[QuitController alloc] initWithNibName:@"QuitController" bundle:nil];
-    tempView.mainTimer = mainTimer;
-    [self presentModalViewController:tempView animated:true];
+    QuitController *quitView = [[QuitController alloc] initWithNibName:@"QuitController" bundle:nil];
+    quitView.mainTimer = mainTimer;
+    quitView.name = name;
+    quitView.country = country;
+    [self presentModalViewController:quitView animated:true];
 }
 
 - (void)showbutton {
@@ -150,7 +145,7 @@ UIColor *redColor;
 		[submit setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 		[submit setBackgroundColor:[UIColor darkGrayColor]];
         
-		_nsURL = [@"http://www.komagan.com/KidsIQ/index.php?format=json&quiz=1&question_id=" stringByAppendingFormat:@"%d ", _id];
+		_nsURL = [@"http://www.komagan.com/KidsIQ/index.php?format=json&quiz2=1&question_id=" stringByAppendingFormat:@"%d ", _id];
 		self.responseData = [NSMutableData data];
 		
 		NSURLRequest *aRequest = [NSURLRequest requestWithURL:[NSURL URLWithString: _nsURL]];
@@ -190,6 +185,7 @@ UIColor *redColor;
         NSString *preText = [NSString stringWithFormat:@"%d", _noOfQuestions];
         preText = [preText stringByAppendingFormat:@") "];
         question.text = [preText stringByAppendingString:[res1 objectForKey:@"question"]];
+        category = [[res1 objectForKey:@"category"] intValue];
         NSString *answer = [res1 objectForKey:@"choice_text"];
         [answers addObject :answer];
         
@@ -233,6 +229,7 @@ UIColor *redColor;
 {
     _id = -1;
     _score = 0;
+    fCount = mCount = sCount = fTCount = mTCount = sTCount = 0;
     reset = YES;  //reset the first set of questions
     _noOfQuestions = 1;
     greenColor = [UIColor colorWithRed:60.0f/255.0f green:179.0f/255.0f blue:113.0f/255.0f alpha:1.0f];
@@ -257,12 +254,14 @@ UIColor *redColor;
 
 - (IBAction)checkAnswer
 {
+    [self calculateTCount:category];
     if([submit.titleLabel.text isEqual:@"Submit"])
     {
         if ([_selectedChoice isEqualToString:_correctChoice]) {
             result.text = @"Correct Answer!";
             [result setTextColor:greenColor];
 			[self highlightCorrect];
+            [self calculateCount:category];
             _score++;
         }
         else {
@@ -300,6 +299,7 @@ UIColor *redColor;
     [self trackScore];
 	result.text =@"";
     [mainTimer invalidate];
+    [self calculateTCount:category];
     [self viewDidLoad];
 }
 
@@ -338,6 +338,21 @@ UIColor *redColor;
     }
     finalScoreText = [NSString stringWithFormat:@"%.0f", round(tally*100)];
     finalScoreText = [finalScoreText stringByAppendingString: @"%"];
+}
+
+- (void) calculateCount:(int)qCount
+{
+    if(qCount == 1) fCount++;
+    if(qCount == 2) mCount++;
+    if(qCount == 3) sCount++;
+}
+
+- (void) calculateTCount:(int)category
+{
+    if(category == 1) { fTCount++; }
+    if(category == 2) { mTCount++; }
+    if(category == 3) { sTCount++; }
+    NSLog(@"%d, %d, %d", fTCount, mTCount, sTCount);
 }
 
 -(void)highlightCorrect
@@ -403,7 +418,13 @@ UIColor *redColor;
     resultView.titleText = titleText;
     resultView.score = finalScoreText;
     resultView.country = country;
-    resultView.paid = paid;
+    resultView.paidFlag = paidFlag;
+    resultView.fCount = fCount;
+    resultView.fTCount = fTCount;
+    resultView.mCount = mCount;
+    resultView.mTCount = mTCount;
+    resultView.sCount = sCount;
+    resultView.sTCount = sTCount;
 	resultView.maxQuestions = maxQuestions;
 	[self resetAll];
     resultView.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;

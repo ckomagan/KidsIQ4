@@ -9,6 +9,7 @@
 #import "LeaderBoardController.h"
 #import "NameViewIPadController.h"
 #import "ASIFormDataRequest.h"
+#import "LeaderBoardDetailController.h"
 
 @interface LeaderBoardController()
 @property (nonatomic, strong) NSString *nsURL;
@@ -21,12 +22,14 @@ NSIndexPath *currentSelection;
 @synthesize responseData;
 NSDictionary *res;
 NSString *name, *score, *country;
+int fCount, mCount, sCount, fTCount, mTCount, sTCount;
 NSMutableArray *leaders;
-int leadercount = 0;
+int row, page = 0, totalItems;
+int rowHeight = 70;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithNibName:@"LeaderBoardController.xib" bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
     }
@@ -43,20 +46,32 @@ int leadercount = 0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    page = 1;
+    totalItems = 0;
+    moreLeaders.hidden = TRUE;
+    prevLeaders.hidden = TRUE;
+    leaderList.rowHeight = rowHeight;
     leaders = [[NSMutableArray alloc] init];
     copyNameList = nameList = [[NSMutableArray alloc] init];
     copyCountryList = countryList = [[NSMutableArray alloc] init];
     copyScoreList = scoreList = [[NSMutableArray alloc] init];
+    copyfCountList = fCountList = [[NSMutableArray alloc] init];
+    copyfTCountList = fTCountList = [[NSMutableArray alloc] init];
+    copymCountList = mCountList = [[NSMutableArray alloc] init];
+    copymTCountList = mTCountList = [[NSMutableArray alloc] init];
+    copysCountList = sCountList = [[NSMutableArray alloc] init];
+    copysTCountList = sTCountList = [[NSMutableArray alloc] init];
+    
+    leaderList.scrollEnabled = YES;
     
     [leaderList setDelegate:self];
     [leaderList setDataSource:self];
     [self receiveData];
-    
 }
 
 -(void)receiveData
 {
-    nsURL = @"http://www.komagan.com/KidsIQ/leaders.php?format=json&getleaders=1";
+    nsURL = @"http://www.komagan.com/KidsIQ/leaders.php?format=json&getleaders2=1";
     self.responseData = [NSMutableData data];
     NSURLRequest *aRequest = [NSURLRequest requestWithURL:[NSURL URLWithString: nsURL]];
     [[NSURLConnection alloc] initWithRequest:aRequest delegate:self];
@@ -71,24 +86,30 @@ int leadercount = 0;
     [self.responseData appendData:data];
     NSError *myError = nil;
     res = [NSJSONSerialization JSONObjectWithData:self.responseData options:NSJSONReadingMutableLeaves error:&myError];
-
+    
     //[leaderList beginUpdates];
     for(NSDictionary *res1 in res) {
-        name = [res1 objectForKey:@"name"];        
+        name = [res1 objectForKey:@"name"];
         score = [res1 objectForKey:@"score"];
         country = [res1 objectForKey:@"country"];
-        
         NSString *space = @"       ";
         NSString *row = [name stringByAppendingString:[space stringByAppendingString:[country stringByAppendingString:[space stringByAppendingString:score]]]];
-        //NSLog(@"%@", row);
+        //NSLog(@"%@", [res1 objectForKey:@"fTCount"]);
         [nameList addObject:name];
         [countryList addObject:country];
         [scoreList addObject:score];
+        [fCountList addObject:[res1 objectForKey:@"fCount"]];
+        [fTCountList addObject:[res1 objectForKey:@"fTCount"]];
+        [mCountList addObject:[res1 objectForKey:@"mCount"]];
+        [mTCountList addObject:[res1 objectForKey:@"mTCount"]];
+        [sCountList addObject:[res1 objectForKey:@"sCount"]];
+        [sTCountList addObject:[res1 objectForKey:@"sTCount"]];
         [leaders addObject:row];
+        totalItems++;
     }
     //[leaderList endUpdates];
     [leaderList reloadData];
-    
+    if (totalItems > 0) [self reset];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
@@ -109,22 +130,55 @@ int leadercount = 0;
     [self dismissModalViewControllerAnimated:YES];
 }
 
+- (void) reset {
+    
+    NSLog(@"we are on page = %d", page);
+    
+    if(page*6 > (totalItems-1))
+    {
+        moreLeaders.hidden = TRUE;
+        page--;
+        if(page < 0) page = 0;
+    }
+    else{
+        moreLeaders.hidden = FALSE;
+    }
+}
+
 -(IBAction)showMoreLeaders {
     
-    nameList = [NSArray arrayWithArray:[copyNameList subarrayWithRange:NSMakeRange(7, [copyNameList count]-7)]];
-    scoreList = [NSArray arrayWithArray:[copyScoreList subarrayWithRange:NSMakeRange(7, [copyScoreList count]-7)]];
-    countryList = [NSArray arrayWithArray:[copyCountryList subarrayWithRange:NSMakeRange(7, [copyCountryList count]-7)]];
+    // NSLog(@"page count in more = %d", page);
+    nameList = [NSArray arrayWithArray:[copyNameList subarrayWithRange:NSMakeRange(page*6, [copysCountList count]-page*6)]];
+    scoreList = [NSArray arrayWithArray:[copyScoreList subarrayWithRange:NSMakeRange(page*6, [copysCountList count]-page*6)]];
+    countryList = [NSArray arrayWithArray:[copyCountryList subarrayWithRange:NSMakeRange(page*6, [copysCountList count]-page*6)]];
+    fCountList = [NSArray arrayWithArray:[copyfCountList subarrayWithRange:NSMakeRange(page*6, [copysCountList count]-page*6)]];
+    mCountList = [NSArray arrayWithArray:[copymCountList subarrayWithRange:NSMakeRange(page*6, [copysCountList count]-page*6)]];
+    sCountList = [NSArray arrayWithArray:[copysCountList subarrayWithRange:NSMakeRange(page*6, [copysCountList count]-page*6)]];
     prevLeaders.hidden = FALSE;
+    page++;
+    [self reset];
     [leaderList reloadData];
 }
 
 -(IBAction)showPreviousLeaders {
     
-    nameList = [NSArray arrayWithArray:[copyNameList subarrayWithRange:NSMakeRange(0, 6)]];
-    scoreList = [NSArray arrayWithArray:[copyScoreList subarrayWithRange:NSMakeRange(0, 6)]];
-    countryList = [NSArray arrayWithArray:[copyCountryList subarrayWithRange:NSMakeRange(0, 6)]];
-    prevLeaders.hidden = TRUE;
+    [self reset];
+    page--;
+    
+    //x NSLog(@"page count in prev = %d", page);
+    nameList = [NSArray arrayWithArray:[copyNameList subarrayWithRange:NSMakeRange(page*6, 6)]];
+    scoreList = [NSArray arrayWithArray:[copyScoreList subarrayWithRange:NSMakeRange(page*6, 6)]];
+    countryList = [NSArray arrayWithArray:[copyCountryList subarrayWithRange:NSMakeRange(page*6, 6)]];
+    fCountList = [NSArray arrayWithArray:[copyfCountList subarrayWithRange:NSMakeRange(page*6, 6)]];
+    mCountList = [NSArray arrayWithArray:[copymCountList subarrayWithRange:NSMakeRange(page*6, 6)]];
+    sCountList = [NSArray arrayWithArray:[copysCountList subarrayWithRange:NSMakeRange(page*6, 6)]];
     [leaderList reloadData];
+    if(page <= 0)
+    {
+        moreLeaders.hidden = FALSE;
+        prevLeaders.hidden = TRUE;
+        page++;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -142,31 +196,27 @@ int leadercount = 0;
     NSData *data = [NSData dataWithContentsOfURL:url];
     UIImage *img = [[UIImage alloc] initWithData: data];
     
-    UILabel *cellLabelS1 = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, cell.frame.size.width, cell.frame.size.height)];
+    UILabel *cellLabelS1 = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, cell.frame.size.width, cell.frame.size.height)];
     
     [cellLabelS1 viewWithTag:1];
     cellLabelS1.text = [nameList objectAtIndex:indexPath.row];
-    cellLabelS1.font = [UIFont boldSystemFontOfSize: 35.0];
+    cellLabelS1.font = [UIFont boldSystemFontOfSize: 50.0];
+     
     [cell addSubview:cellLabelS1];
     
-    UILabel *cellLabelS2 = [[UILabel alloc] initWithFrame:CGRectMake(250, 0, cell.frame.size.width, cell.frame.size.height)];
-
+    UILabel *cellLabelS2 = [[UILabel alloc] initWithFrame:CGRectMake(280, 0, cell.frame.size.width, cell.frame.size.height)];
+    
     [cellLabelS2 viewWithTag:2];
     cellLabelS2.text = [scoreList objectAtIndex:indexPath.row];
-    cellLabelS2.font = [UIFont systemFontOfSize: 35.0];
+    cellLabelS2.font = [UIFont systemFontOfSize: 45.0];
     [cell addSubview:cellLabelS2];
-
-    UILabel *cellLabelS3 = [[UILabel alloc] initWithFrame:CGRectMake(420, 0, cell.frame.size.width, cell.frame.size.height)];
+    
+    UILabel *cellLabelS3 = [[UILabel alloc] initWithFrame:CGRectMake(480, 0, cell.frame.size.width, cell.frame.size.height)];
     
     [cellLabelS3 viewWithTag:2];
     cellLabelS3.text = [countryList objectAtIndex:indexPath.row];
-    cellLabelS3.font = [UIFont systemFontOfSize: 35.0];
+    cellLabelS3.font = [UIFont systemFontOfSize: 40.0];
     [cell addSubview:cellLabelS3];
-    
-    //leaderList.backgroundColor = [UIColor redColor];
-    //leaderList.separatorColor = [UIColor clearColor];
-
-    //[cell.imageView setImage:img];
     
     return cell;
 }
@@ -175,7 +225,6 @@ int leadercount = 0;
 {
     if([nameList count] >= 6)
     {
-        moreLeaders.hidden = FALSE;
         return 6;
     }
     else {
@@ -183,14 +232,46 @@ int leadercount = 0;
     }
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+        return rowHeight;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    currentSelection = indexPath;
-    //[self performSegueWithIdentifier:@"offerDetailsPage" sender:self];
+    NSUInteger row = [indexPath row];
+    name = [nameList objectAtIndex:row];
+    score = [scoreList objectAtIndex:row];
+    country = [countryList objectAtIndex:row];
+    fCount = [[fCountList objectAtIndex:row] intValue];
+    fTCount = [[fTCountList objectAtIndex:row] intValue];
+    mCount = [[mCountList objectAtIndex:row] intValue];
+    mTCount = [[mTCountList objectAtIndex:row] intValue];
+    sCount = [[sCountList objectAtIndex:row] intValue];
+    sTCount = [[sTCountList objectAtIndex:row] intValue];
+    [leaderList reloadData];
+    [self performSegueWithIdentifier:@"showLeaderBoard" sender:self];
+}
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"showLeaderBoard"]) {
+        LeaderBoardDetailController *leaderDetailView = segue.destinationViewController;
+        leaderDetailView.name = name;
+        leaderDetailView.country = country;
+        leaderDetailView.scoreDetail = score;
+        leaderDetailView.fCount = fCount;
+        leaderDetailView.mCount = mCount;
+        leaderDetailView.sCount = sCount;
+        leaderDetailView.fTCount = fTCount;
+        leaderDetailView.mTCount = mTCount;
+        leaderDetailView.sTCount = sTCount;
+        //NSString *scoresub = [score substringToIndex:[score length] - 1];
+        //leaderDetailView.scoreDetail = [scoresub floatValue];
+    }
 }
 
 -(IBAction)loginScreen {

@@ -13,9 +13,10 @@
 {
     IBOutlet UITableView *leaderList;
     IBOutlet UIButton *moreLeaders, *prevLeaders;
+    
     NSMutableData *responseData;
-    NSMutableArray *leaders, *columns, *nameList, *countryList, *scoreList;
-    NSMutableArray *copyNameList, *copyCountryList, *copyScoreList;
+    NSMutableArray *leaders, *columns, *nameList, *countryList, *scoreList, *fCountList, *fTCountList, *mCountList, *mTCountList, *sCountList, *sTCountList;
+    NSMutableArray *copyNameList, *copyCountryList, *copyScoreList, *copyfCountList, *copyfTCountList, *copymCountList, *copymTCountList, *copysCountList, *copysTCountList;
     UITableViewCell *cell, *tvCell;
 }
 

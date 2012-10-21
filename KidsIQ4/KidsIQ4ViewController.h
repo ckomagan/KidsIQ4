@@ -30,6 +30,7 @@
 
 @property (nonatomic, strong) NSString *name, *country, *paid;
 @property (nonatomic, retain) NSMutableData *responseData;
+@property Boolean paidFlag;
 @property (nonatomic, retain) NSMutableSet *usedNumbers;
 @property (nonatomic, retain) UILabel *myCounterLabel;
 @property int maxQuestions;
@@ -53,6 +54,8 @@
 -(IBAction)skipQuestion;
 
 -(void)calculatescore;
+
+- (void) calculateCount:(int)qCount;
 
 -(void)showResults;
 

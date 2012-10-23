@@ -68,13 +68,13 @@ bool countrySelected = FALSE;
     
     challengeLevel = 1; noOfQuestions = 0;
     //noOfQuestions = maxQuestions;
-    nameText = [[UITextField alloc] initWithFrame:CGRectMake(60, 80, 200, 40)];
+    nameText = [[UITextField alloc] initWithFrame:CGRectMake(60, 80, 200, 70)];
     nameText.borderStyle = 3; // rounded, recessed rectangle
     nameText.autocorrectionType = UITextAutocorrectionTypeNo;
     nameText.textAlignment = UITextAlignmentCenter;
     nameText.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     nameText.returnKeyType = UIReturnKeyDone;
-    nameText.font = [UIFont fontWithName:@"Trebuchet MS" size:50];
+    nameText.font = [UIFont fontWithName:@"Trebuchet MS" size:60];
     nameText.textColor = [UIColor blackColor];
     nameText.delegate = self;
     [self.view addSubview:nameText];
@@ -209,6 +209,7 @@ bool countrySelected = FALSE;
         NSString *substring = [NSString stringWithString:textField.text];
         substring = [substring stringByReplacingCharactersInRange:range withString:string];
         [self searchAutocompleteEntriesWithSubstring:substring];
+        //[self checkName];
         countrySelected = FALSE;
         return TRUE;
     }
@@ -246,6 +247,12 @@ bool countrySelected = FALSE;
 	} else {
 		return NO;
 	}
+    [self checkName];
+    [self validateTextField];   
+}
+
+- (IBAction)textFieldDidEndEditing:(id)sender {
+    [self.view endEditing:YES];
     [self checkName];
     [self validateTextField];
 }
@@ -420,6 +427,7 @@ bool countrySelected = FALSE;
 
 -(void)checkName
 {
+    if (newString == NULL || newString == @"") newString = nameText.text;
     nsURL = [@"http://www.komagan.com/KidsIQ/leaders.php?format=json&checkname2=1&name=" stringByAppendingFormat:@"%@", newString];
     self.responseData = [NSMutableData data];
     NSURLRequest *aRequest = [NSURLRequest requestWithURL:[NSURL URLWithString: nsURL]];
@@ -438,7 +446,6 @@ bool countrySelected = FALSE;
 {
     NSError *myError = nil;
     res = [NSJSONSerialization JSONObjectWithData:self.responseData options:NSJSONReadingMutableLeaves error:&myError];
-    
     for(NSDictionary *res1 in res) {
         nameExists = [[res1 objectForKey:@"result"] boolValue];
         if(nameExists)
@@ -454,8 +461,6 @@ bool countrySelected = FALSE;
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    //NSLog(@"didFailWithError");
-    //NSLog(@"Connection failed: %@", [error description]);
     self.responseData = nil;
 }
 
@@ -520,7 +525,7 @@ bool countrySelected = FALSE;
         // not purchased so show a view to prompt for purchase
         askToPurchase = [[UIAlertView alloc]
                          initWithTitle:@"Full Feature Locked"
-                         message:@"Purchase Full Feature?"
+                         message:@"Purchase full feature \n for US $0.99?"
                          delegate:self
                          cancelButtonTitle:nil
                          otherButtonTitles:@"Yes", @"No", nil];

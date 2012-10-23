@@ -56,7 +56,7 @@ UIColor *redColor;
 
 - (void)showbutton {
     submit.enabled = TRUE;
-    [submit setTitle: @"Submit" forState: UIControlStateNormal];
+    [submit setTitle: @"Next" forState: UIControlStateNormal];
 	[submit setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 	[submit setBackgroundColor:[UIColor brownColor]];
 }
@@ -255,7 +255,7 @@ UIColor *redColor;
 - (IBAction)checkAnswer
 {
     [self calculateTCount:category];
-    if([submit.titleLabel.text isEqual:@"Submit"])
+    /*if([submit.titleLabel.text isEqual:@"Submit"])
     {
         if ([_selectedChoice isEqualToString:_correctChoice]) {
             result.text = @"Correct Answer!";
@@ -287,7 +287,31 @@ UIColor *redColor;
         [self trackScore];
         [mainTimer invalidate];
         [self viewDidLoad];
+    }*/
+    
+    if([submit.titleLabel.text isEqual:@"Next"])
+    {
+        if ([_selectedChoice isEqualToString:_correctChoice]) {
+			[self highlightCorrect];
+            [self calculateCount:category];
+            _score++;
+        }
+        else {
+            [self highlightWrong];
+        }
+        _noOfQuestions++;
+        _id = [self generateRandomNumber];
+		[submit setBackgroundColor:[UIColor purpleColor]];
+		[submit setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+		[self disableAllChoices];
+        [self resetAllChoices];
+        [self enableAllChoices];
+        [self trackScore];
+        [mainTimer invalidate];
+        [self viewDidLoad];
+        return;
     }
+
     
 }
 

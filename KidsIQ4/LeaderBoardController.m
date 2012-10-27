@@ -25,7 +25,7 @@ NSString *name, *score, *country;
 int fCount, mCount, sCount, fTCount, mTCount, sTCount;
 NSMutableArray *leaders;
 int row, page = 0, totalItems;
-int rowHeight = 70;
+int rowHeight = 80;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -63,7 +63,7 @@ int rowHeight = 70;
     copysTCountList = sTCountList = [[NSMutableArray alloc] init];
     
     leaderList.scrollEnabled = YES;
-    
+    [leaderList setBackgroundColor:UIColor.clearColor]; // Make the table view transparent
     [leaderList setDelegate:self];
     [leaderList setDataSource:self];
     [self receiveData];
@@ -142,12 +142,14 @@ int rowHeight = 70;
     }
     else{
         moreLeaders.hidden = FALSE;
+        bottomlabel.hidden = FALSE;
     }
 }
 
 -(IBAction)showMoreLeaders {
     
     // NSLog(@"page count in more = %d", page);
+    
     nameList = [NSArray arrayWithArray:[copyNameList subarrayWithRange:NSMakeRange(page*6, [copysCountList count]-page*6)]];
     scoreList = [NSArray arrayWithArray:[copyScoreList subarrayWithRange:NSMakeRange(page*6, [copysCountList count]-page*6)]];
     countryList = [NSArray arrayWithArray:[copyCountryList subarrayWithRange:NSMakeRange(page*6, [copysCountList count]-page*6)]];
@@ -185,23 +187,18 @@ int rowHeight = 70;
 {
     static NSString *simpleTableIdentifier = @"SimpleTableItem";
     
-    cell = [leaderList dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    cell = [leaderList dequeueReusableCellWithIdentifier:nil];
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
     }
     
-    id path = @"http://www.geonames.org/flags/x/us.gif";
-    NSURL *url = [NSURL URLWithString:path];
-    NSData *data = [NSData dataWithContentsOfURL:url];
-    UIImage *img = [[UIImage alloc] initWithData: data];
-    
     UILabel *cellLabelS1 = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, cell.frame.size.width, cell.frame.size.height)];
     
     [cellLabelS1 viewWithTag:1];
     cellLabelS1.text = [nameList objectAtIndex:indexPath.row];
-    cellLabelS1.font = [UIFont boldSystemFontOfSize: 50.0];
-     
+    cellLabelS1.font = [UIFont boldSystemFontOfSize: 45.0];
+    [cellLabelS1 setBackgroundColor:UIColor.clearColor]; // Make the table view transparent
     [cell addSubview:cellLabelS1];
     
     UILabel *cellLabelS2 = [[UILabel alloc] initWithFrame:CGRectMake(280, 0, cell.frame.size.width, cell.frame.size.height)];
@@ -209,15 +206,16 @@ int rowHeight = 70;
     [cellLabelS2 viewWithTag:2];
     cellLabelS2.text = [scoreList objectAtIndex:indexPath.row];
     cellLabelS2.font = [UIFont systemFontOfSize: 45.0];
+    [cellLabelS2 setBackgroundColor:UIColor.clearColor]; // Make the table view transparent
     [cell addSubview:cellLabelS2];
     
-    UILabel *cellLabelS3 = [[UILabel alloc] initWithFrame:CGRectMake(480, 0, cell.frame.size.width, cell.frame.size.height)];
+    UILabel *cellLabelS3 = [[UILabel alloc] initWithFrame:CGRectMake(475, 0, cell.frame.size.width, cell.frame.size.height)];
     
     [cellLabelS3 viewWithTag:2];
     cellLabelS3.text = [countryList objectAtIndex:indexPath.row];
     cellLabelS3.font = [UIFont systemFontOfSize: 40.0];
+    [cellLabelS3 setBackgroundColor:UIColor.clearColor]; // Make the table view transparent
     [cell addSubview:cellLabelS3];
-    
     return cell;
 }
 
@@ -228,6 +226,7 @@ int rowHeight = 70;
         return 6;
     }
     else {
+        bottomlabel.hidden = TRUE;
         return [nameList count];
     }
 }
@@ -252,7 +251,7 @@ int rowHeight = 70;
     mTCount = [[mTCountList objectAtIndex:row] intValue];
     sCount = [[sCountList objectAtIndex:row] intValue];
     sTCount = [[sTCountList objectAtIndex:row] intValue];
-    [leaderList reloadData];
+    //[leaderList reloadData];
     [self performSegueWithIdentifier:@"showLeaderBoard" sender:self];
 }
 

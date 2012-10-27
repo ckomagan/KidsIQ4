@@ -14,7 +14,6 @@
     IBOutlet UILabel *nameLabel;
     IBOutlet UILabel *titleLabel;
     IBOutlet UILabel *scoreLabel;
-    IBOutlet UIButton *startoverBtn;
     NSMutableData *responseData;
 }
 
@@ -27,5 +26,6 @@
 -(IBAction)dismissView;
 -(IBAction)loginScreen;
 -(IBAction)leaderBoardScreen;
+-(IBAction)FBScreen;
 
 @end

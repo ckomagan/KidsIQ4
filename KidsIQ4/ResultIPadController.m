@@ -11,6 +11,7 @@
 #import "NameViewIPadController.h"
 #import "LeaderBoardController.h"
 #import "ASIFormDataRequest.h"
+#import "SLViewController.h"
 
 @interface ResultIPadController()
 
@@ -43,30 +44,29 @@ NSString *paid = @"N";
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    nameLabel.text =  [@"Hi there " stringByAppendingString:[name stringByAppendingString:@""]];
+    nameLabel.text =  [@"Hi there, " stringByAppendingString:[name stringByAppendingString:@""]];
     titleLabel.text = titleText;
     scoreLabel.text = [@"Your score is: " stringByAppendingString:score];
     [self sendRequest];
+    [super viewDidLoad];
 }
 
 - (void)sendRequest
 {
     nsURL = @"http://www.komagan.com/KidsIQ/leaders.php?format=json&adduser2=1";
     self.responseData = [NSMutableData data];
-    
+    if (paidFlag) {paid = @"Y";}
     NSURL *url = [NSURL URLWithString:nsURL];
     NSLog(@"%@", name);
     NSLog(@"%@", score);
     NSLog(@"Paid user or no? %@", paid);
     
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    
+    /*
     [request setRequestMethod:@"POST"];
     [request addRequestHeader:@"Content-Type" value:@"application/xml;charset=UTF-8;"];
     [request setPostValue:name forKey:@"name"];
     [request setPostValue:score forKey:@"score"];
-    [request setPostValue:paid forKey:@"paid"];
     [request setPostValue:country forKey:@"country"];
     [request setPostValue:paid forKey:@"paid"];
     [request setPostValue:[NSNumber numberWithInt:fCount] forKey:@"fCount"];
@@ -76,7 +76,7 @@ NSString *paid = @"N";
     [request setPostValue:[NSNumber numberWithInt:sCount] forKey:@"sCount"];
     [request setPostValue:[NSNumber numberWithInt:sTCount] forKey:@"sTCount"];
     [request setDelegate:self];
-    [request startAsynchronous];
+    [request startAsynchronous];*/
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
@@ -96,20 +96,11 @@ NSString *paid = @"N";
     // e.g. self.myOutlet = nil;
 }
 
--(IBAction)dismissView {
-    
-    KidsIQ4ViewController *quiView = [[KidsIQ4ViewController alloc] initWithNibName:@"KidsIQ4ViewController" bundle:nil];
-    [self dismissModalViewControllerAnimated:YES];
-    quiView.maxQuestions = maxQuestions;
-    [self presentModalViewController:quiView animated:false];
-}
-
 -(IBAction)loginScreen {
     
     NameViewIPadController *vc = [[UIStoryboard storyboardWithName:@"MainStoryboard_iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"NameViewIPadController"];
     vc.maxQuestions = 0;
     [self presentModalViewController:vc animated:false];
-    
 }
 
 -(IBAction)leaderBoardScreen {
@@ -117,6 +108,21 @@ NSString *paid = @"N";
     LeaderBoardController *vc = [[UIStoryboard storyboardWithName:@"MainStoryboard_iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"LeaderBoardController"];
     [self presentModalViewController:vc animated:false];
     
+}
+
+-(IBAction)FBScreen {
+    SLViewController *fbView = [[SLViewController alloc] initWithNibName:@"SLViewController" bundle:nil];
+    fbView.nameText = name;
+    fbView.scoreText = score;
+    [self presentModalViewController:fbView animated:false];
+}
+
+-(IBAction)dismissView {
+    
+    KidsIQ4ViewController *quizView = [[KidsIQ4ViewController alloc] initWithNibName:@"KidsIQ4ViewController" bundle:nil];
+    [self dismissModalViewControllerAnimated:YES];
+    quizView.maxQuestions = maxQuestions;
+    [self presentModalViewController:quizView animated:false];
 }
 
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation

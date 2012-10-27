@@ -13,6 +13,7 @@
 {
     IBOutlet UITableView *leaderList;
     IBOutlet UIButton *moreLeaders, *prevLeaders;
+    IBOutlet UILabel *bottomlabel;
     
     NSMutableData *responseData;
     NSMutableArray *leaders, *columns, *nameList, *countryList, *scoreList, *fCountList, *fTCountList, *mCountList, *mTCountList, *sCountList, *sTCountList;

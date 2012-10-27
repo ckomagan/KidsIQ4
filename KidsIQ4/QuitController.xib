@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
-		<string key="IBDocument.SystemVersion">11G56</string>
+		<string key="IBDocument.SystemVersion">11G63</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2840</string>
 		<string key="IBDocument.AppKitVersion">1138.51</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
@@ -62,11 +62,11 @@
 						<int key="IBUITextAlignment">1</int>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
 							<int key="type">1</int>
-							<double key="pointSize">50</double>
+							<double key="pointSize">54</double>
 						</object>
 						<object class="NSFont" key="IBUIFont">
 							<string key="NSName">Helvetica</string>
-							<double key="NSSize">50</double>
+							<double key="NSSize">54</double>
 							<int key="NSfFlags">16</int>
 						</object>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
@@ -75,7 +75,7 @@
 					<object class="IBUIButton" id="579144560">
 						<reference key="NSNextResponder" ref="748711216"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{238, 454}, {132, 68}}</string>
+						<string key="NSFrame">{{180, 454}, {190, 91}}</string>
 						<reference key="NSSuperview" ref="748711216"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="999815887"/>
@@ -98,20 +98,20 @@
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC41AA</bytes>
 						</object>
-						<object class="IBUIFontDescription" key="IBUIFontDescription" id="270134343">
+						<object class="IBUIFontDescription" key="IBUIFontDescription" id="283564863">
 							<int key="type">2</int>
-							<double key="pointSize">40</double>
+							<double key="pointSize">60</double>
 						</object>
-						<object class="NSFont" key="IBUIFont" id="1071127082">
+						<object class="NSFont" key="IBUIFont" id="695343120">
 							<string key="NSName">Helvetica-Bold</string>
-							<double key="NSSize">40</double>
+							<double key="NSSize">60</double>
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
 					<object class="IBUIButton" id="999815887">
 						<reference key="NSNextResponder" ref="748711216"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{401, 454}, {130, 68}}</string>
+						<string key="NSFrame">{{401, 454}, {190, 91}}</string>
 						<reference key="NSSuperview" ref="748711216"/>
 						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:241</string>
@@ -127,8 +127,8 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzE0IDAuMzA5ODAzOTIxNiAwLjUyMTU2ODYyNzUAA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="390228844"/>
-						<reference key="IBUIFontDescription" ref="270134343"/>
-						<reference key="IBUIFont" ref="1071127082"/>
+						<reference key="IBUIFontDescription" ref="283564863"/>
+						<reference key="IBUIFont" ref="695343120"/>
 					</object>
 				</array>
 				<string key="NSFrame">{{0, 20}, {768, 1004}}</string>
@@ -301,10 +301,6 @@
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
-		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
-			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<real value="1536" key="NS.object.0"/>
-		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<string key="IBCocoaTouchPluginVersion">1926</string>

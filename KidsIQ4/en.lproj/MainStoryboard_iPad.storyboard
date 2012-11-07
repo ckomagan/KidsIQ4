@@ -284,8 +284,8 @@
                                 <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="and you are from?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hO7-DT-qhS">
-                                <rect key="frame" x="206" y="341" width="361" height="47"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Country you are from?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hO7-DT-qhS">
+                                <rect key="frame" x="168" y="341" width="438" height="52"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -339,13 +339,21 @@
                                     <action selector="valueChanged" destination="3rd-29-MEL" eventType="valueChanged" id="fth-nl-ZGz"/>
                                 </connections>
                             </segmentedControl>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" animating="YES" style="gray" id="zdT-3g-LXo">
+                                <rect key="frame" x="363" y="567" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="contentStretch" x="0.49999999999999994" y="0.49999999999999994" width="1" height="1"/>
+                                <color key="color" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackTranslucent"/>
                     <connections>
+                        <outlet property="backButton" destination="ybH-Lv-6DS" id="Jat-WS-VRd"/>
                         <outlet property="nameOK" destination="Kry-Xe-JeQ" id="Rcb-a2-Zjw"/>
                         <outlet property="segmentedControl" destination="Z5w-3Q-dzc" id="JuY-WG-WfG"/>
+                        <outlet property="spinner" destination="zdT-3g-LXo" id="2pw-Ao-Bsw"/>
                         <outlet property="statusLabel" destination="1X7-Qj-mdl" id="9R4-4I-Qwp"/>
                         <outlet property="titleLabel" destination="yne-NV-T16" id="eio-8g-r1b"/>
                     </connections>
@@ -790,80 +798,6 @@
             <point key="canvasLocation" x="2075" y="-183"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="KidsIQ4ViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/KidsIQ4ViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="checkAnswer"/>
-                <relationship kind="action" name="dismissView"/>
-                <relationship kind="action" name="showLoginViewController"/>
-                <relationship kind="action" name="showQuitController"/>
-                <relationship kind="action" name="skipQuestion"/>
-                <relationship kind="action" name="startCountdown:"/>
-                <relationship kind="action" name="submit:"/>
-                <relationship kind="outlet" name="answerA" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="answerB" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="answerC" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="answerD" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="choicea" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="choiceb" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="choicec" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="choiced" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="myCounterLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="question" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="result" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="score" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="submit" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="test" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="LeaderBoardController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LeaderBoardController.h"/>
-            <relationships>
-                <relationship kind="action" name="dismissView"/>
-                <relationship kind="action" name="loginScreen"/>
-                <relationship kind="action" name="showMoreLeaders"/>
-                <relationship kind="action" name="showPreviousLeaders"/>
-                <relationship kind="outlet" name="bottomlabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="leaderList" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="moreLeaders" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="prevLeaders" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="LeaderBoardDetailController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LeaderBoardDetailController.h"/>
-            <relationships>
-                <relationship kind="action" name="dismissView"/>
-                <relationship kind="outlet" name="fCountLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="fCountView" candidateClass="UIProgressView"/>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="mCountLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="mCountView" candidateClass="UIProgressView"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="sCountLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="sCountView" candidateClass="UIProgressView"/>
-                <relationship kind="outlet" name="scoreLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="NameViewIPadController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NameViewIPadController.h"/>
-            <relationships>
-                <relationship kind="action" name="deleteKeyChain:"/>
-                <relationship kind="action" name="dismissView"/>
-                <relationship kind="action" name="textFieldReturn:"/>
-                <relationship kind="action" name="valueChanged"/>
-                <relationship kind="outlet" name="choicesLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="errorStatus" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="levelPickerView" candidateClass="UIPickerView"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="nameOK" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="segmentedControl" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="statusLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>

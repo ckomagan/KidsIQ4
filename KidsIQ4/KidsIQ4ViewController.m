@@ -459,7 +459,7 @@ UIColor *redColor;
 -(int)generateRandomNumber
 {
     int randomNumber = -1;
-    randomNumber = (arc4random() % 70) + 1;
+    randomNumber = (arc4random() % 75) + 1;
     NSLog(@"numberWithSet : %@ \n\n",usedNumbers);
     bool myIndex = [usedNumbers containsObject:[NSNumber numberWithInt: randomNumber]];
     if (myIndex == false)

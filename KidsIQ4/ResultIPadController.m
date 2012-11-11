@@ -20,6 +20,7 @@
 
 @implementation ResultIPadController
 @synthesize name, titleText, score, country, paidFlag, maxQuestions, nsURL, responseData, fCount, mCount, sCount, fTCount, mTCount, sTCount;
+@synthesize player = _player;
 bool reset = NO;
 NSString *paid = @"N";
 
@@ -44,6 +45,7 @@ NSString *paid = @"N";
 
 - (void)viewDidLoad
 {
+    [_player stop];
     nameLabel.text =  [@"Hi there, " stringByAppendingString:[name stringByAppendingString:@""]];
     titleLabel.text = titleText;
     scoreLabel.text = [@"Your score is: " stringByAppendingString:score];
@@ -62,7 +64,7 @@ NSString *paid = @"N";
     NSLog(@"Paid user or no? %@", paid);
     
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-    /*
+    
     [request setRequestMethod:@"POST"];
     [request addRequestHeader:@"Content-Type" value:@"application/xml;charset=UTF-8;"];
     [request setPostValue:name forKey:@"name"];
@@ -76,7 +78,7 @@ NSString *paid = @"N";
     [request setPostValue:[NSNumber numberWithInt:sCount] forKey:@"sCount"];
     [request setPostValue:[NSNumber numberWithInt:sTCount] forKey:@"sTCount"];
     [request setDelegate:self];
-    [request startAsynchronous];*/
+    [request startAsynchronous];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request {

@@ -52,6 +52,7 @@
 
 -(IBAction)loginScreen {
     [self.mainTimer invalidate];
+    [_player stop];
     UIViewController *vc = [[UIStoryboard storyboardWithName:@"MainStoryboard_iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"NameViewIPadController"];
     
     [self presentModalViewController:vc animated:false];

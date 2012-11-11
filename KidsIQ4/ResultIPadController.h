@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AudioToolbox/AudioToolbox.h"
+#import "AVFoundation/AVFoundation.h"
 
 @interface ResultIPadController : UIViewController <NSURLConnectionDelegate>
 {
@@ -22,6 +24,7 @@
 
 @property int maxQuestions, fCount, fTCount, mCount, mTCount, sCount, sTCount;
 @property (nonatomic, retain) NSMutableData *responseData;
+@property (strong, nonatomic) AVAudioPlayer *player;
 
 -(IBAction)dismissView;
 -(IBAction)loginScreen;

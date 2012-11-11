@@ -11,21 +11,15 @@
 
 @interface NameViewIPadController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver, UIAlertViewDelegate, UITableViewDelegate, UITextFieldDelegate>
 {
-    IBOutlet UILabel *nameLabel;
-    IBOutlet UILabel *titleLabel;
-    IBOutlet UILabel *choicesLabel;
-    IBOutlet UILabel *errorStatus;
-    UITextField *nameText;
-    IBOutlet UIButton *nameOK;
+    IBOutlet UILabel *nameLabel, *titleLabel, *choicesLabel, *errorStatus;
+    IBOutlet UIButton *nameOK, *backButton;
     IBOutlet UIPickerView *levelPickerView;
     IBOutlet UISegmentedControl *segmentedControl;
-    NSMutableArray *autoCompleteArray;
-    NSMutableArray *elementArray, *lowerCaseElementArray;
-    UITextField *countryText;
-    UITableView *countryTableView;
     IBOutlet UILabel *statusLabel;
     UIAlertView *askToPurchase;
-    NSMutableData *responseData;
+    UITextField *nameText, *countryText;
+    UITableView *countryTableView;
+    NSMutableArray *autoCompleteArray, *elementArray, *lowerCaseElementArray;
 }
 
 @property (nonatomic, retain) NSArray *levelpicker;

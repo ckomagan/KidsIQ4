@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AudioToolbox/AudioToolbox.h"
+#import "AVFoundation/AVFoundation.h"
 
 @interface QuitController : UIViewController {
     IBOutlet UIButton *dismissYes;
@@ -15,6 +17,7 @@
 
 @property (nonatomic, retain) NSTimer *mainTimer;
 @property (nonatomic, retain) NSString *name, *country;
+@property (strong, nonatomic) AVAudioPlayer *player;
 
 -(IBAction)dismissView;
 -(IBAction)loginScreen;

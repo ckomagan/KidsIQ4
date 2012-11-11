@@ -28,8 +28,7 @@
 NSInteger _id = -1;
 NSInteger _score = 0;
 NSInteger _noOfQuestions = 1;
-int count = 1;
-int category;
+int randomNumber, category;
 NSDictionary *res;
 NSString *titleText;
 NSString *scoreText;
@@ -39,7 +38,7 @@ bool reset;
 int counter, hours, minutes, seconds, secondsLeft, noOfSecs, fCount, fTCount, mCount, mTCount, sCount, sTCount;
 UIColor *greenColor;
 UIColor *redColor;
-@synthesize name, country, paidFlag, level, maxQuestions, myCounterLabel;
+@synthesize name, country, paidFlag, level, maxQuestions, myCounterLabel, player = _player;
 
 -(void)showLoginViewController {
     
@@ -51,6 +50,7 @@ UIColor *redColor;
     quitView.mainTimer = mainTimer;
     quitView.name = name;
     quitView.country = country;
+    quitView.player = _player;
     [self presentModalViewController:quitView animated:true];
 }
 
@@ -65,9 +65,8 @@ UIColor *redColor;
     
     [self resetAllChoices];
     choicea = (UIButton *)sender;
-    [answerA setTextColor:[UIColor blueColor]];
     [choicea setBackgroundColor:[UIColor blueColor]];
-    _selectedChoice = answerA.text;
+    _selectedChoice = choicea.titleLabel.text;
 	btnPressed = @"choicea";
     [self showbutton];
 }
@@ -76,9 +75,8 @@ UIColor *redColor;
 	
     [self resetAllChoices];
     choiceb = (UIButton *)sender;
-    [answerB setTextColor:[UIColor blueColor]];
     [choiceb setBackgroundColor:[UIColor blueColor]];
-    _selectedChoice = answerB.text;
+    _selectedChoice = choiceb.titleLabel.text;
 	btnPressed = @"choiceb";
     [self showbutton];
     
@@ -88,9 +86,8 @@ UIColor *redColor;
     
     [self resetAllChoices];
     choicec = (UIButton *)sender;
-    [answerC setTextColor:[UIColor blueColor]];
     [choicec setBackgroundColor:[UIColor blueColor]];
-    _selectedChoice = answerC.text;
+    _selectedChoice = choicec.titleLabel.text;
 	btnPressed = @"choicec";
     [self showbutton];
 }
@@ -99,9 +96,8 @@ UIColor *redColor;
     
     [self resetAllChoices];
     choiced = (UIButton *)sender;
-    [answerD setTextColor:[UIColor blueColor]];
     [choiced setBackgroundColor:[UIColor blueColor]];
-    _selectedChoice = answerD.text;
+    _selectedChoice = choiced.titleLabel.text;
 	btnPressed = @"choiced";
     [self showbutton];
 }
@@ -117,7 +113,6 @@ UIColor *redColor;
 {
     [super viewDidLoad];
     nameLabel.text = name;
-    usedNumbers = [NSMutableSet setWithCapacity:maxQuestions];
 
     hours = minutes = seconds = 0;
     if ( [mainTimer isValid]){
@@ -129,6 +124,18 @@ UIColor *redColor;
                                                userInfo:nil
                                                 repeats:YES];
     [self processQuestions];
+    [choicea.layer setCornerRadius:10.0f];
+    choicea.layer.masksToBounds = TRUE;
+    [choiceb.layer setCornerRadius:7.0f];
+    choiceb.layer.masksToBounds = TRUE;
+    [choicec.layer setCornerRadius:7.0f];
+    choicec.layer.masksToBounds = TRUE;
+    [choiced.layer setCornerRadius:7.0f];
+    choiced.layer.masksToBounds = TRUE;
+    [choicea setBackgroundColor:[UIColor colorWithRed:(0/255.0) green:(0/255.0) blue:(255/255.0) alpha:1]];
+    [choiceb setBackgroundColor:[UIColor colorWithRed:(0/255.0) green:(0/255.0) blue:(255/255.0) alpha:1]];
+    [choicec setBackgroundColor:[UIColor colorWithRed:(0/255.0) green:(0/255.0) blue:(255/255.0) alpha:1]];
+    [choiced setBackgroundColor:[UIColor colorWithRed:(0/255.0) green:(0/255.0) blue:(255/255.0) alpha:1]];
 }
 
 - (void)processQuestions
@@ -149,8 +156,6 @@ UIColor *redColor;
 		self.responseData = [NSMutableData data];
 		
 		NSURLRequest *aRequest = [NSURLRequest requestWithURL:[NSURL URLWithString: _nsURL]];
-		NSLog(@"request established");
-		NSLog(@"didReceiveResponse");
 		[[NSURLConnection alloc] initWithRequest:aRequest delegate:self];
 	}
 	else{
@@ -174,9 +179,6 @@ UIColor *redColor;
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    //NSLog(@"connectionDidFinishLoading");
-    //NSLog(@"Succeeded! Received %d bytes of data",[self.responseData length]);
-    
     NSError *myError = nil;
     res = [NSJSONSerialization JSONObjectWithData:self.responseData options:NSJSONReadingMutableLeaves error:&myError];
     NSMutableArray *answers = [[NSMutableArray alloc] init];
@@ -203,22 +205,19 @@ UIColor *redColor;
         return;
     }
     
-    answerA.text = [answers objectAtIndex:0];
-    answerB.text = [answers objectAtIndex:1];
-    answerC.text = [answers objectAtIndex:2];
-    answerD.text = [answers objectAtIndex:3];
+    [choicea setTitle:[answers objectAtIndex:0] forState:UIControlStateNormal];
+    [choiceb setTitle:[answers objectAtIndex:1] forState:UIControlStateNormal];
+    [choicec setTitle:[answers objectAtIndex:2] forState:UIControlStateNormal];
+    [choiced setTitle:[answers objectAtIndex:3] forState:UIControlStateNormal];
+    
 }
 
 - (void)resetAllChoices
 {
-    [answerA setTextColor:[UIColor blackColor]];
-    [choicea setBackgroundColor:[UIColor blackColor]];
-    [answerB setTextColor:[UIColor blackColor]];
-    [choiceb setBackgroundColor:[UIColor blackColor]];
-    [answerC setTextColor:[UIColor blackColor]];
-    [choicec setBackgroundColor:[UIColor blackColor]];
-    [answerD setTextColor:[UIColor blackColor]];
-    [choiced setBackgroundColor:[UIColor blackColor]];
+    [choicea setBackgroundColor:[UIColor colorWithRed:(0/255.0) green:(0/255.0) blue:(255/255.0) alpha:0.4]];
+    [choiceb setBackgroundColor:[UIColor colorWithRed:(0/255.0) green:(0/255.0) blue:(255/255.0) alpha:0.4]];
+    [choicec setBackgroundColor:[UIColor colorWithRed:(0/255.0) green:(0/255.0) blue:(255/255.0) alpha:0.4]];
+    [choiced setBackgroundColor:[UIColor colorWithRed:(0/255.0) green:(0/255.0) blue:(255/255.0) alpha:0.4]];
     choicea.enabled = YES;
     choiceb.enabled = YES;
     choiceb.enabled = YES;
@@ -255,40 +254,7 @@ UIColor *redColor;
 - (IBAction)checkAnswer
 {
     [self calculateTCount:category];
-    /*if([submit.titleLabel.text isEqual:@"Submit"])
-    {
-        if ([_selectedChoice isEqualToString:_correctChoice]) {
-            result.text = @"Correct Answer!";
-            [result setTextColor:greenColor];
-			[self highlightCorrect];
-            [self calculateCount:category];
-            _score++;
-        }
-        else {
-			NSString *preText = @"Incorrect! The correct answer is ";
-            result.text = [preText stringByAppendingString:[NSString stringWithFormat:@"%@",_correctChoice]];
-            [result setTextColor:[UIColor redColor]];
-            [self highlightWrong];
-        }
-        _noOfQuestions++;
-        _id = [self generateRandomNumber];
-        [submit setTitle:@"Next" forState:(UIControlState)UIControlStateNormal];
-		[submit setBackgroundColor:[UIColor purpleColor]];
-		[submit setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-		[self disableAllChoices];
-        return;
-    }
-    
-    if([submit.titleLabel.text isEqual:@"Next"])
-    {
-        result.text = @"";
-        [self resetAllChoices];
-        [self enableAllChoices];
-        [self trackScore];
-        [mainTimer invalidate];
-        [self viewDidLoad];
-    }*/
-    
+        
     if([submit.titleLabel.text isEqual:@"Next"])
     {
         if ([_selectedChoice isEqualToString:_correctChoice]) {
@@ -384,25 +350,21 @@ UIColor *redColor;
 	if([btnPressed isEqual:@"choicea"])
 	{
 		[choicea setBackgroundColor:greenColor];
-		[answerA setTextColor:greenColor];
 	}
 	
 	if([btnPressed isEqual:@"choiceb"])
 	{
 		[choiceb setBackgroundColor:greenColor];
-		[answerB setTextColor:greenColor];
 	}
     
 	if([btnPressed isEqual:@"choicec"])
 	{
 		[choicec setBackgroundColor:greenColor];
-		[answerC setTextColor:greenColor];
 	}
     
 	if([btnPressed isEqualToString:@"choiced"])
 	{
 		[choiced setBackgroundColor:greenColor];
-		[answerD setTextColor:greenColor];
 	}
 }
 
@@ -411,32 +373,27 @@ UIColor *redColor;
 	if([btnPressed isEqual:@"choicea"])
 	{
 		[choicea setBackgroundColor:[UIColor redColor]];
-		[answerA setTextColor:[UIColor redColor]];
 	}
 	
 	if([btnPressed isEqual:@"choiceb"])
 	{
 		[choiceb setBackgroundColor:[UIColor redColor]];
-		[answerB setTextColor:[UIColor redColor]];
 	}
 	
 	if([btnPressed isEqual:@"choicec"])
 	{
 		[choicec setBackgroundColor:[UIColor redColor]];
-		[answerC setTextColor:[UIColor redColor]];
 	}
 	
 	if([btnPressed isEqualToString:@"choiced"])
 	{
 		[choiced setBackgroundColor:[UIColor redColor]];
-		[answerD setTextColor:[UIColor redColor]];
 	}
 }
 
 -(void)showResults
 {
     [self calculatescore];
-    
     ResultIPadController *resultView = [[ResultIPadController alloc] initWithNibName:@"ResultIPadController" bundle:nil];
     resultView.name = name;
     resultView.titleText = titleText;
@@ -458,14 +415,12 @@ UIColor *redColor;
 
 -(int)generateRandomNumber
 {
-    int randomNumber = -1;
     randomNumber = (arc4random() % 75) + 1;
-    NSLog(@"numberWithSet : %@ \n\n",usedNumbers);
     bool myIndex = [usedNumbers containsObject:[NSNumber numberWithInt: randomNumber]];
     if (myIndex == false)
     {
         [usedNumbers addObject:[NSNumber numberWithInt:randomNumber]];
-        count++;
+        NSLog(@"numberWithSet : %@ \n\n",usedNumbers);
         return randomNumber;
     }
     else{
